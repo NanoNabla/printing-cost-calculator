@@ -37,7 +37,7 @@ def main(image_path, output, num_threads):
     price_list = price_calculation(result_queue)
     with open(output, "w") as f:
         writer = csv.writer(f)
-        writer.writerow(["file", "c", "m", "y", "b", "price_c", "price_m", "price_y", "price_b", "price_total"])
+        writer.writerow(["file", "c", "m", "y", "b", "price_k", "price_m", "price_y", "price_k", "price_total"])
         writer.writerows(price_list)
 
 
