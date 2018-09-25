@@ -48,31 +48,6 @@ def color_calculation_in_thread(i, task_queue, result_queue):
         result_queue.put(res)
 
 
-
-def price_calculation(color_list):
-    height = cfg.PAGE_PIXEL_HEIGHT
-    width = cfg.PAGE_PIXEL_WIDTH
-    coverage = cfg.COST_COVERAGE
-
-    price_list = []
-    while not color_list.empty():
-        el = color_list.get()
-        #    for el in color_list:
-        cyan = el[1] / ((height * width) * coverage * cmyk_scale)
-        magenta = el[2] / ((height * width) * coverage * cmyk_scale)
-        yellow = el[3] / ((height * width) * coverage * cmyk_scale)
-        black = el[4] / ((height * width) * coverage * cmyk_scale)
-        cyan_cost = cyan * cfg.COST_CYAN
-        magenta_cost = magenta * cfg.COST_MAGENTA
-        yellow_cost = yellow * cfg.COST_YELLOW
-        black_cost = black * cfg.COST_BLACK
-
-        total_cost = cyan_cost + magenta_cost + yellow_cost + black_cost + cfg.COST_ADDITIONAL
-        price_list.append(
-            (el[0], cyan, magenta, yellow, black, cyan_cost, magenta_cost, yellow_cost, black_cost, total_cost))
-    return price_list
-
-
 def color_calculation(image_path, image):
     img_path = os.path.join(image_path, image)
     img = Image.open(img_path, "r")
@@ -103,6 +78,30 @@ def color_calculation(image_path, image):
                 black += p_k
 
     return (img_path, cyan, magenta, yellow, black, white)
+
+
+def price_calculation(color_list):
+    height = cfg.PAGE_PIXEL_HEIGHT
+    width = cfg.PAGE_PIXEL_WIDTH
+    coverage = cfg.COST_COVERAGE
+
+    price_list = []
+    while not color_list.empty():
+        el = color_list.get()
+        #    for el in color_list:
+        cyan = el[1] / ((height * width) * coverage * cmyk_scale)
+        magenta = el[2] / ((height * width) * coverage * cmyk_scale)
+        yellow = el[3] / ((height * width) * coverage * cmyk_scale)
+        black = el[4] / ((height * width) * coverage * cmyk_scale)
+        cyan_cost = cyan * cfg.COST_CYAN
+        magenta_cost = magenta * cfg.COST_MAGENTA
+        yellow_cost = yellow * cfg.COST_YELLOW
+        black_cost = black * cfg.COST_BLACK
+
+        total_cost = cyan_cost + magenta_cost + yellow_cost + black_cost + cfg.COST_ADDITIONAL
+        price_list.append(
+            (el[0], cyan, magenta, yellow, black, cyan_cost, magenta_cost, yellow_cost, black_cost, total_cost))
+    return price_list
 
 
 if __name__ == "__main__":
