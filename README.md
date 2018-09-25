@@ -1,0 +1,1 @@
+Simple script to calculate printing cost for colored pages
