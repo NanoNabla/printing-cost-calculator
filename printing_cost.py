@@ -4,7 +4,9 @@ import os
 
 import cost_config as cfg
 from PIL import Image
-from color_convert import rgb_to_cmyk, cmyk_scale
+
+
+# from color_convert import rgb_to_cmyk, cmyk_scale
 
 
 def main(image_path, output):
@@ -42,6 +44,10 @@ def color_calculation(image_path, image_list):
     img_color_list = []
     for image in image_list:
         img = Image.open(os.path.join(image_path, image), "r")
+
+        if img.mode != "CMYK":
+            img = img.convert("CMYK")
+
         pixels = img.load()
         width, height = img.size
 
@@ -51,11 +57,15 @@ def color_calculation(image_path, image_list):
         yellow = 0
         black = 0
 
+        #        print(img.mode)
+
+
         for x in range(width):
             for y in range(height):
                 if pixels[x, y] != (255, 255, 255):
-                    r, g, b = pixels[x, y]
-                    (p_c, p_m, p_y, p_k) = rgb_to_cmyk(r, g, b)
+                    # r, g, b = pixels[x, y]
+                    # (p_c, p_m, p_y, p_k) = rgb_to_cmyk(r, g, b)
+                    (p_c, p_m, p_y, p_k) = pixels[x, y]
                     cyan += p_c
                     magenta += p_m
                     yellow += p_y
