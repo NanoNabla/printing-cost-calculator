@@ -55,11 +55,11 @@ def color_calculation(image_path, image_list):
             for y in range(height):
                 if pixels[x, y] != (255, 255, 255):
                     r, g, b = pixels[x, y]
-                    (p_c, p_m, p_y, p_y) = rgb_to_cmyk(r, g, b)
+                    (p_c, p_m, p_y, p_k) = rgb_to_cmyk(r, g, b)
                     cyan += p_c
                     magenta += p_m
                     yellow += p_y
-                    black += p_y
+                    black += p_k
 
         img_color_list.append((cyan, magenta, yellow, black, white))
     return img_color_list
