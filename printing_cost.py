@@ -8,6 +8,7 @@ from PIL import Image
 
 cmyk_scale = 255  # PIL scale cmyk from 0 to 255
 
+
 def main(image_path, output, num_threads):
     image_list = os.listdir(image_path)
 
@@ -87,6 +88,7 @@ def recalculateK(c, m, y, k):
     k = min_cmy
 
     return c, m, y, k
+
 
 def price_calculation(color_list):
     height = cfg.PAGE_PIXEL_HEIGHT
