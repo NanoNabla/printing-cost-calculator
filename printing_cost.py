@@ -1,17 +1,12 @@
 import argparse
 import csv
 import os
-# import queue
-# from threading import Thread
 from multiprocessing import Process, Queue
 
 import cost_config as cfg
 from PIL import Image
-from color_convert import cmyk_scale
 
-
-# shared_color_list = []
-
+cmyk_scale = 255  # PIL scale cmyk from 0 to 255
 
 def main(image_path, output, num_threads):
     image_list = os.listdir(image_path)
@@ -72,6 +67,7 @@ def color_calculation(image_path, image):
                 # r, g, b = pixels[x, y]
                 # (p_c, p_m, p_y, p_k) = rgb_to_cmyk(r, g, b)
                 (p_c, p_m, p_y, p_k) = pixels[x, y]
+                (p_c, p_m, p_y, p_k) = recalculateK(p_c, p_m, p_y, p_k)
                 cyan += p_c
                 magenta += p_m
                 yellow += p_y
@@ -79,6 +75,18 @@ def color_calculation(image_path, image):
 
     return (img_path, cyan, magenta, yellow, black, white)
 
+
+def recalculateK(c, m, y, k):
+    if k != 0:
+        return c, m, y, k
+    # extract out k [0,255]
+    min_cmy = min(c, m, y)
+    c = (c - min_cmy)
+    m = (m - min_cmy)
+    y = (y - min_cmy)
+    k = min_cmy
+
+    return c, m, y, k
 
 def price_calculation(color_list):
     height = cfg.PAGE_PIXEL_HEIGHT
